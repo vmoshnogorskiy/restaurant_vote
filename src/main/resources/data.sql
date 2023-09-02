@@ -1,20 +1,34 @@
-INSERT INTO USERS (NAME, EMAIL, PASSWORD, CALORIES_PER_DAY)
-VALUES ('User', 'user@yandex.ru', '{noop}password', 2005),
-       ('Admin', 'admin@gmail.com', '{noop}admin', 1900),
-       ('Guest', 'guest@gmail.com', '{noop}guest', 2000);
+DELETE FROM user_role;
+DELETE FROM vote;
+DELETE FROM menu_item;
+DELETE FROM restaurant;
+DELETE FROM users;
 
-INSERT INTO USER_ROLE (ROLE, USER_ID)
+INSERT INTO users (name, email, password)
+VALUES ('User', 'user@yandex.ru', 'password'),
+       ('Admin', 'admin@gmail.com', 'admin'),
+       ('Guest', 'guest@gmail.com', 'guest');
+
+INSERT INTO user_role (role, user_id)
 VALUES ('USER', 1),
        ('ADMIN', 2),
        ('USER', 2);
 
-INSERT INTO MEAL (date_time, description, calories, user_id)
-VALUES ('2020-01-30 10:00:00', 'Завтрак', 500, 1),
-       ('2020-01-30 13:00:00', 'Обед', 1000, 1),
-       ('2020-01-30 20:00:00', 'Ужин', 500, 1),
-       ('2020-01-31 0:00:00', 'Еда на граничное значение', 100, 1),
-       ('2020-01-31 10:00:00', 'Завтрак', 500, 1),
-       ('2020-01-31 13:00:00', 'Обед', 1000, 1),
-       ('2020-01-31 20:00:00', 'Ужин', 510, 1),
-       ('2020-01-31 14:00:00', 'Админ ланч', 510, 2),
-       ('2020-01-31 21:00:00', 'Админ ужин', 1500, 2);
+INSERT INTO restaurant (name, address, created)
+VALUES ('Река', 'ул. Набережная, д.1', '2023-01-30 10:00:00'),
+       ('Фукусима', 'ул. Ленина, д.13', '2022-06-29 13:10:00'),
+       ('Вкусняшка', 'ул. Мира, д.15', '2021-04-29 16:45:00');
+
+INSERT INTO menu_item (name, price, updated, restaurant_id)
+VALUES ('Суп сельский', 180.00, '2023-03-09 10:00:00', 4),
+       ('Пюре картофельное', 112.50, '2023-03-09 10:03:00', 6),
+       ('Пюре гороховое', 92.50, '2023-03-09 10:03:00', 5),
+       ('Котлета из свинины', 110.00, '2023-03-09 10:03:33', 5),
+       ('Котлета из говядины', 125.00, '2023-03-09 10:04:00', 6),
+       ('Чай черный', 70.00, '2023-03-09 10:05:33', 5),
+       ('Чай черный', 80.00, '2023-03-09 10:05:33', 6);
+
+INSERT INTO vote (date, restaurant_id, user_id)
+VALUES ('2023-03-19', 5, 1),
+       ('2023-03-19', 6, 2);
+       --('2023-03-19', 6, 100002);
