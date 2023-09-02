@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS restaurant;
 DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS users;
 
+
 CREATE TABLE users
 (
     id               INTEGER AUTO_INCREMENT PRIMARY KEY,

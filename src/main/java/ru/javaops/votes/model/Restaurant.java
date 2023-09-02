@@ -7,12 +7,18 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.springframework.util.CollectionUtils;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @Table(name = "restaurant", schema = "public")
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"menu"})
 public class Restaurant extends NamedEntity {
 
     @Column(name = "address", nullable = false)
@@ -27,9 +33,8 @@ public class Restaurant extends NamedEntity {
     @OneToMany(mappedBy = "restaurant")
     private Set<MenuItem> menu;
 
-    public Restaurant() {
-
-    }
+    @OneToMany(mappedBy = "restaurant")
+    private Set<Vote> votes;
 
     public Restaurant(Restaurant r) {
         this(r.id, r.name, r.address, r.created, r.menu);
@@ -48,37 +53,7 @@ public class Restaurant extends NamedEntity {
         this.setMenu(menuItems);
     }
 
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public Set<MenuItem> getMenu() {
-        return menu;
-    }
-
     public void setMenu(Collection<MenuItem> menu) {
         this.menu = CollectionUtils.isEmpty(menu) ? Collections.EMPTY_SET : new HashSet<>(menu);
-    }
-
-    @Override
-    public String toString() {
-        return "Restaurant{" +
-                "menu=" + menu +
-                ", name='" + name + '\'' +
-                ", id=" + id +
-                '}';
     }
 }

@@ -2,15 +2,17 @@ package ru.javaops.votes.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "vote", schema = "public")
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"restaurant"})
 public class Vote extends BaseEntity {
-
-    public static final String DELETE = "Vote.delete";
-    public static final String ALL_SORTED = "Vote.getAllSorted";
-    public static final String GET_FOR_RESTAURANT = "Vote.getForRestaurant";
 
     @Column(name = "date", nullable = false, columnDefinition = "Date")
     @NotNull
@@ -26,9 +28,6 @@ public class Vote extends BaseEntity {
     @NotNull
     private Restaurant restaurant;
 
-    public Vote() {
-    }
-
     public Vote(Vote v) {
         this(v.id, v.date, v.restaurant, v.user);
     }
@@ -38,39 +37,5 @@ public class Vote extends BaseEntity {
         this.date = date;
         this.restaurant = restaurant;
         this.user = user;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
-    @Override
-    public String toString() {
-        return "Vote{" +
-                "datetime=" + date +
-                ", user=" + user +
-                ", restaurant=" + restaurant +
-                ", id=" + id +
-                '}';
     }
 }

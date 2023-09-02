@@ -2,10 +2,16 @@ package ru.javaops.votes.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "menu_item", schema = "public")
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"restaurant"})
 public class MenuItem extends NamedEntity {
 
     @Column(name = "price", nullable = false, columnDefinition = "NUMERIC(9, 2)")
@@ -19,9 +25,6 @@ public class MenuItem extends NamedEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    public MenuItem() {
-    }
-
     public MenuItem(MenuItem menuItem) {
         this(menuItem.id, menuItem.name, menuItem.price, menuItem.updated, menuItem.restaurant);
     }
@@ -31,41 +34,5 @@ public class MenuItem extends NamedEntity {
         this.price = price;
         this.updated = updated;
         this.restaurant = restaurant;
-    }
-
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public LocalDateTime getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(LocalDateTime updated) {
-        this.updated = updated;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
-    @Override
-    public String toString() {
-        return "MenuItem{" +
-                "price=" + price +
-                ", updated=" + updated +
-                ", restaurant=" + restaurant +
-                ", name='" + name + '\'' +
-                ", id=" + id +
-                '}';
     }
 }
