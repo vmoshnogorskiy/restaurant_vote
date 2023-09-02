@@ -17,15 +17,15 @@ spring:
   datasource:
     # ImMemory
     url: jdbc:h2:mem:topjava
-    #    tcp: jdbc:h2:tcp://localhost:9092/mem:topjava
+    #    tcp: jdbc:h2:tcp://localhost:9092/mem:restaurant_vote
     # Absolute path
-    #    url: jdbc:h2:C:/projects/bootjava/db/topjava
-    #    tcp: jdbc:h2:tcp://localhost:9092/C:/projects/bootjava/db/topjava
+    #    url: jdbc:h2:C:/projects/bootjava/db/restaurant_vote
+    #    tcp: jdbc:h2:tcp://localhost:9092/C:/projects/bootjava/db/restaurant_vote
     # Relative path form current dir
-    #    url: jdbc:h2:./db/topjava
+    #    url: jdbc:h2:./db/restaurant_vote
     # Relative path from home
-    #    url: jdbc:h2:~/topjava
-    #    tcp: jdbc:h2:tcp://localhost:9092/~/topjava
+    #    url: jdbc:h2:~/restaurant_vote
+    #    tcp: jdbc:h2:tcp://localhost:9092/~/restaurant_vote
     username: sa
     password:
 
@@ -44,7 +44,7 @@ spring:
 logging:
   level:
     root: WARN
-    ru.javaops.topjava: DEBUG
+    ru.javaops.restaurant_vote: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
 
 server.servlet:
