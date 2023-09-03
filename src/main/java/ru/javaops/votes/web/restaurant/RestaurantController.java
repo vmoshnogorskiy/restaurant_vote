@@ -13,6 +13,7 @@ import ru.javaops.votes.model.MenuItem;
 import ru.javaops.votes.model.Restaurant;
 import ru.javaops.votes.repository.MenuItemRepository;
 import ru.javaops.votes.repository.RestaurantRepository;
+import ru.javaops.votes.repository.VoteRepository;
 import ru.javaops.votes.web.AuthUser;
 
 import java.util.List;
@@ -24,32 +25,34 @@ import java.util.List;
 public class RestaurantController {
     static final String REST_URL = "/api/restaurants";
 
-    private final RestaurantRepository repository;
+    private final RestaurantRepository restaurant;
 
-    private final MenuItemRepository menuItems;
+    private final MenuItemRepository menuItem;
+
+    private final VoteRepository vote;
 
     @GetMapping
     public List<Restaurant> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAll restaurants for user {}", authUser.id());
-        return repository.findAll();
+        return restaurant.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("get restaurant {} for user {}", id, authUser.id());
-        return ResponseEntity.of(repository.findById(id));
+        return ResponseEntity.of(restaurant.findById(id));
     }
 
     @GetMapping("/with-menuitems")
     public List<Restaurant> getAllWithMenuItems(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get all restaurants with MenuItems for user {}", authUser.id());
         //return null;
-        return repository.getAllWithMenuItems();
+        return restaurant.getAllWithMenuItems();
     }
 
     @GetMapping("/{id}/menuitems")
     public List<MenuItem> getAllMenuItems(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("getAll menu items for restaurant {} and user {}", id, authUser.id());
-        return menuItems.getAllMenuItems(id);
+        return menuItem.getAllMenuItems(id);
     }
 }
