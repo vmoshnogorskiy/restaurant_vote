@@ -1,5 +1,6 @@
 package ru.javaops.votes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -19,10 +20,12 @@ public class MenuItem extends NamedEntity {
     private float price;
 
     @Column(name = "updated", nullable = false, columnDefinition = "timestamp default now()")
+    @JsonIgnore
     private LocalDateTime updated;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
+    @JsonIgnore
     private Restaurant restaurant;
 
     public MenuItem(MenuItem menuItem) {

@@ -4,10 +4,10 @@ DELETE FROM menu_item;
 DELETE FROM restaurant;
 DELETE FROM users;
 
-INSERT INTO users (name, email, password)
-VALUES ('User', 'user@yandex.ru', 'password'),
-       ('Admin', 'admin@gmail.com', 'admin'),
-       ('Guest', 'guest@gmail.com', 'guest');
+INSERT INTO users (name, email, password, calories_per_day)
+VALUES ('User', 'user@yandex.ru', '{noop}password', 2000),
+       ('Admin', 'admin@gmail.com', '{noop}admin', 1500),
+       ('Guest', 'guest@gmail.com', '{noop}guest', 1200);
 
 INSERT INTO user_role (role, user_id)
 VALUES ('USER', 1),

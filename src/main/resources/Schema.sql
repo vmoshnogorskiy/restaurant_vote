@@ -12,7 +12,8 @@ CREATE TABLE users
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
     registered       TIMESTAMP           DEFAULT now() NOT NULL,
-    enabled          BOOL                DEFAULT TRUE  NOT NULL
+    enabled          BOOL                DEFAULT TRUE  NOT NULL,
+    calories_per_day INTEGER             DEFAULT 2000
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 
@@ -27,9 +28,9 @@ CREATE TABLE user_role
 CREATE TABLE restaurant
 (
     id              INTEGER AUTO_INCREMENT PRIMARY KEY,
-    name            VARCHAR        NOT NULL,
-    address         VARCHAR        NOT NULL,
-    created         TIMESTAMP      NOT NULL
+    name            VARCHAR                 NOT NULL,
+    address         VARCHAR                 NOT NULL,
+    created         TIMESTAMP DEFAULT now() NOT NULL
 );
 
 CREATE TABLE menu_item
