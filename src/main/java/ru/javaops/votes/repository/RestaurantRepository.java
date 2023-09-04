@@ -12,4 +12,6 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
     @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menu ORDER BY r.created DESC")
     List<Restaurant> getAllWithMenuItems();
 
+    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.votes ORDER BY r.created DESC")
+    List<Restaurant> getAllWithVotes();
 }

@@ -28,34 +28,34 @@ import static ru.javaops.votes.util.validation.ValidationUtil.checkNew;
 public class AdminRestaurantController {
     static final String REST_URL = "/api/admin/restaurants";
 
-    private final RestaurantRepository repository;
+    private final RestaurantRepository restaurantRepository;
 
-    private final MenuItemRepository menuItems;
+    private final MenuItemRepository menuItemRepository;
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("delete restaurant {} for user {}", id, authUser.id());
-        repository.deleteExisted(id);
+        restaurantRepository.deleteExisted(id);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         int userId = authUser.id();
-        log.info("update {} for user {}", restaurant, userId);
+        log.info("update restaurant {} for user {}", id, userId);
         assureIdConsistent(restaurant, id);
-        repository.getExisted(id);
-        repository.save(restaurant);
+        restaurantRepository.getExisted(id);
+        restaurantRepository.save(restaurant);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createRestaurant(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Restaurant restaurant) {
+    public ResponseEntity<Restaurant> addRestaurant(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Restaurant restaurant) {
         int userId = authUser.id();
-        log.info("create {} for user {}", restaurant, userId);
+        log.info("create new restaurant for user {}", userId);
         checkNew(restaurant);
         restaurant.setCreated(LocalDateTime.now());
-        Restaurant created = repository.save(restaurant);
+        Restaurant created = restaurantRepository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -66,17 +66,17 @@ public class AdminRestaurantController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMenuItem(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id, @PathVariable("menu_id") int menuId) {
         log.info("delete menu item {} for restaurant {} and user {}", menuId, id, authUser.id());
-        menuItems.deleteExisted(menuId);
+        menuItemRepository.deleteExisted(menuId);
     }
 
     @PostMapping(path = "/{id}/menuitems", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuItem> createMenuItem(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id, @Valid @RequestBody MenuItem item) {
+    public ResponseEntity<MenuItem> addMenuItem(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id, @Valid @RequestBody MenuItem item) {
         int userId = authUser.id();
-        log.info("create menu item {} by restaurant {} for user {}", item, id, userId);
+        log.info("create new menu item by restaurant {} for user {}", id, userId);
         checkNew(item);
         item.setUpdated(LocalDateTime.now());
-        item.setRestaurant(repository.getExisted(id));
-        MenuItem created = menuItems.save(item);
+        item.setRestaurant(restaurantRepository.getExisted(id));
+        MenuItem created = menuItemRepository.save(item);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}/menuitems/{id}")
                 .buildAndExpand(id, created.getId()).toUri();
@@ -91,7 +91,7 @@ public class AdminRestaurantController {
         log.info("update menu item {} by restaurant {} for user {}", menuId, id, userId);
         assureIdConsistent(item, menuId);
         item.setUpdated(LocalDateTime.now());
-        item.setRestaurant(repository.getExisted(id));
-        menuItems.save(item);
+        item.setRestaurant(restaurantRepository.getExisted(id));
+        menuItemRepository.save(item);
     }
 }
