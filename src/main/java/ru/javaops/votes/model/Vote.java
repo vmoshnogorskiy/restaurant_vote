@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Table(name = "vote", schema = "public")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString(callSuper = true, exclude = {"restaurant"})
 public class Vote extends BaseEntity {
 
@@ -25,7 +25,7 @@ public class Vote extends BaseEntity {
     @JsonIgnore
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     @JsonIgnore

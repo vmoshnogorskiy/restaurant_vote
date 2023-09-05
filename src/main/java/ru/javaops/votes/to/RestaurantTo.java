@@ -21,4 +21,9 @@ public class RestaurantTo extends NamedTo {
         this.created = created;
         this.votesCount = votesCount;
     }
+
+    @Override
+    public String toString() {
+        return "RestaurantTo:" + id;
+    }
 }

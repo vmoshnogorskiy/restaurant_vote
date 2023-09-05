@@ -1,5 +1,6 @@
 package ru.javaops.votes.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -19,6 +20,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true, exclude = {"menu"})
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Restaurant extends NamedEntity {
 
     @Column(name = "address", nullable = false)
@@ -35,10 +37,6 @@ public class Restaurant extends NamedEntity {
 
     @OneToMany(mappedBy = "restaurant")
     private Set<Vote> votes;
-
-    public Restaurant(Restaurant r) {
-        this(r.id, r.name, r.address, r.created, r.menu);
-    }
 
     public Restaurant(Integer id, String name, String address, LocalDateTime created) {
         super(id, name);
