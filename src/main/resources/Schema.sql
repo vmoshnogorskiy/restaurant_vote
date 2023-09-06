@@ -38,14 +38,11 @@ CREATE TABLE menu_item
     id              INTEGER AUTO_INCREMENT PRIMARY KEY,
     name            VARCHAR        NOT NULL,
     price           NUMERIC(9, 2)  NOT NULL,
-    updated         TIMESTAMP      NOT NULL,
+    updated         TIMESTAMP DEFAULT now() NOT NULL,
     restaurant_id   INTEGER        NOT NULL,
-    --user_id         INTEGER        NOT NULL,
-    --FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX menu_unique_restaurant_updated_idx ON menu_item (restaurant_id, updated);
---CREATE INDEX menu_user_idx ON menu_item (user_id);
+--CREATE UNIQUE INDEX menu_unique_restaurant_updated_idx ON menu_item (restaurant_id, updated);
 
 CREATE TABLE vote
 (
