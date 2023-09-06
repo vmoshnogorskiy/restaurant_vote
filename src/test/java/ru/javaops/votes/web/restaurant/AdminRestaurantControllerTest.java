@@ -20,6 +20,7 @@ import static ru.javaops.votes.web.restaurant.MenuItemTestData.MENU_ITEM1_ID;
 import static ru.javaops.votes.web.restaurant.MenuItemTestData.MENU_ITEM_MATCHER;
 import static ru.javaops.votes.web.restaurant.RestaurantTestData.*;
 import static ru.javaops.votes.web.user.UserTestData.ADMIN_MAIL;
+import static ru.javaops.votes.web.user.UserTestData.USER_MAIL;
 
 class AdminRestaurantControllerTest extends AbstractControllerTest {
 
@@ -40,6 +41,13 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = USER_MAIL)
+    void deleteRestaurantForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + RESTAURANT1_ID))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
         Restaurant updated = getUpdated();
@@ -48,6 +56,13 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
         RESTAURANT_MATCHER.assertMatch(restaurantRepository.getExisted(RESTAURANT1_ID), updated);
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void updateRestaurantForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.put(REST_URL_SLASH + RESTAURANT1_ID))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -66,11 +81,25 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = USER_MAIL)
+    void addRestaurantForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void deleteMenuItem() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + RESTAURANT1_ID + "/menuitems/" + MENU_ITEM1_ID))
                 .andExpect(status().isNoContent());
         assertFalse(menuItemRepository.findById(MENU_ITEM1_ID).isPresent());
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void deleteMenuItemForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + RESTAURANT1_ID + "/menuitems/" + MENU_ITEM1_ID))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -89,6 +118,13 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = USER_MAIL)
+    void addMenuItemForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL_SLASH + RESTAURANT1_ID + "/menuitems"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateMenuItem() throws Exception {
         MenuItem updated = MenuItemTestData.getUpdated();
@@ -97,5 +133,12 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
         MENU_ITEM_MATCHER.assertMatch(menuItemRepository.getExisted(RESTAURANT1_ID), updated);
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void updateMenuItemForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.put(REST_URL_SLASH + RESTAURANT1_ID + "/menuitems/" + MENU_ITEM1_ID))
+                .andExpect(status().isForbidden());
     }
 }
