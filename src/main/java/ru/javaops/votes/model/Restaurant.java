@@ -44,14 +44,25 @@ public class Restaurant extends NamedEntity {
         this.created = created;
     }
 
-    public Restaurant(Integer id, String name, String address, LocalDateTime created, Collection<MenuItem> menuItems) {
-        super(id, name);
-        this.address = address;
-        this.created = created;
+    public Restaurant(Integer id, Restaurant restaurant, Collection<Vote> votes) {
+        super(id, restaurant.getName());
+        this.address = restaurant.getAddress();
+        this.created = restaurant.getCreated();
+        this.setVotes(votes);
+    }
+
+    public Restaurant(Restaurant restaurant, Collection<MenuItem> menuItems) {
+        super(restaurant.getId(), restaurant.getName());
+        this.address = restaurant.getAddress();
+        this.created = restaurant.getCreated();
         this.setMenu(menuItems);
     }
 
     public void setMenu(Collection<MenuItem> menu) {
         this.menu = CollectionUtils.isEmpty(menu) ? Collections.EMPTY_SET : new HashSet<>(menu);
+    }
+
+    public void setVotes(Collection<Vote> votes) {
+        this.votes = CollectionUtils.isEmpty(votes) ? Collections.EMPTY_SET : new HashSet<>(votes);
     }
 }

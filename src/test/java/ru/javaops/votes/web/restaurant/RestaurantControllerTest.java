@@ -54,7 +54,13 @@ class RestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getAllWithMenuItems() {
+    @WithUserDetails(value = USER_MAIL)
+    void getAllWithMenuItems() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "with-menuitems"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(RESTAURANT_WITH_MENU_ITEMS_MATCHER.contentJson(restaurantsWithMenu));
     }
 
     @Test
@@ -68,10 +74,22 @@ class RestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getAllWithVotes() {
+    @WithUserDetails(value = USER_MAIL)
+    void getAllWithVotes() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "with-votes"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(RESTAURANT_WITH_VOTES_MATCHER.contentJson(restaurantsWithVotes));
     }
 
     @Test
-    void getRestaurantsWithCountVotes() {
+    @WithUserDetails(value = USER_MAIL)
+    void getRestaurantsWithCountVotes() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "with-count-votes"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(RESTAURANT_TO_MATCHER.contentJson(restaurantTos));
     }
 }

@@ -37,7 +37,7 @@ public class VoteController {
 
     static final String REST_URL = "/api/votes";
 
-    static final int HOUR_AFTER_NOT_CHANGE = 23;
+    static int hourAfterNotChangeVote = 11;
 
     private final VoteRepository voteRepository;
 
@@ -104,8 +104,8 @@ public class VoteController {
     private void validateUpdateConstraint(int userId, int id) {
         Vote vote = voteRepository.getExistedOrBelonged(userId, id);
         int hour = LocalDateTime.now().getHour();
-        if (LocalDate.now().isAfter(vote.getDate()) || hour >= HOUR_AFTER_NOT_CHANGE) {
-            throw new DataConflictException("the vote cannot be changed today after " + HOUR_AFTER_NOT_CHANGE + ":00 am or later");
+        if (LocalDate.now().isAfter(vote.getDate()) || hour >= hourAfterNotChangeVote) {
+            throw new DataConflictException("the vote cannot be changed today after " + hourAfterNotChangeVote + ":00 am or later");
         }
     }
 }
