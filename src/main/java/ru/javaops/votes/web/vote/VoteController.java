@@ -37,7 +37,7 @@ public class VoteController {
 
     static final String REST_URL = "/api/votes";
 
-    static final int HOUR_AFTER_NOT_CHANGE = 11;
+    static final int HOUR_AFTER_NOT_CHANGE = 23;
 
     private final VoteRepository voteRepository;
 
@@ -61,10 +61,10 @@ public class VoteController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteVote(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
-        log.info("delete vote {} for user {}", id, authUser.id());
-        ;
-        validateUpdateConstraint(voteRepository.getExisted(id));
-        voteRepository.deleteExisted(id);
+        int userId = authUser.id();
+        log.info("delete vote {} for user {}", id, userId);
+        validateUpdateConstraint(userId, id);
+        voteRepository.delete(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -89,7 +89,7 @@ public class VoteController {
         log.info("update vote {} for user {}", id, userId);
         assureIdConsistent(voteTo, id);
         Vote vote = voteRepository.getExisted(id);
-        validateUpdateConstraint(vote);
+        validateUpdateConstraint(userId, id);
         VotesUtil.updateVote(vote, restaurantRepository.getExisted(voteTo.getRestaurantId()), authUser.getUser());
         voteRepository.save(vote);
     }
@@ -101,7 +101,8 @@ public class VoteController {
         }
     }
 
-    private void validateUpdateConstraint(Vote vote) {
+    private void validateUpdateConstraint(int userId, int id) {
+        Vote vote = voteRepository.getExistedOrBelonged(userId, id);
         int hour = LocalDateTime.now().getHour();
         if (LocalDate.now().isAfter(vote.getDate()) || hour >= HOUR_AFTER_NOT_CHANGE) {
             throw new DataConflictException("the vote cannot be changed today after " + HOUR_AFTER_NOT_CHANGE + ":00 am or later");

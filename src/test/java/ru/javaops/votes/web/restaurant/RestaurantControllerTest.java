@@ -5,16 +5,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javaops.votes.web.AbstractControllerTest;
-import ru.javaops.votes.web.meal.MealController;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.javaops.votes.web.restaurant.MenuItemTestData.MENU_ITEM_MATCHER;
+import static ru.javaops.votes.web.restaurant.MenuItemTestData.menuItems;
 import static ru.javaops.votes.web.restaurant.RestaurantController.REST_URL;
 import static ru.javaops.votes.web.restaurant.RestaurantTestData.*;
 import static ru.javaops.votes.web.user.UserTestData.USER_MAIL;
-import static ru.javaops.votes.web.user.UserTestData.user;
 
 class RestaurantControllerTest extends AbstractControllerTest {
 
@@ -59,7 +58,13 @@ class RestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getAllMenuItems() {
+    @WithUserDetails(value = USER_MAIL)
+    void getAllMenuItems() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + (RESTAURANT1_ID + 1) + "/menuitems"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MENU_ITEM_MATCHER.contentJson(menuItems));
     }
 
     @Test
