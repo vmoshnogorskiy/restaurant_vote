@@ -12,8 +12,7 @@ import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static ru.javaops.votes.util.RestaurantsUtil.createTo;
 import static ru.javaops.votes.web.restaurant.MenuItemTestData.*;
-import static ru.javaops.votes.web.vote.VoteTestData.vote1;
-import static ru.javaops.votes.web.vote.VoteTestData.vote2;
+import static ru.javaops.votes.web.vote.VoteTestData.*;
 
 public class RestaurantTestData {
 
@@ -55,9 +54,9 @@ public class RestaurantTestData {
 
     public static final Restaurant restaurantWithMenu3 = new Restaurant(restaurant3, List.of(menuItem2, menuItem5, menuItem7));
 
-    public static final Restaurant restaurantWithVote2 = new Restaurant(RESTAURANT1_ID + 1, restaurant2, List.of(vote1));
+    public static final Restaurant restaurantWithVote2 = new Restaurant(restaurant2, vote1);
 
-    public static final Restaurant restaurantWithVote3 = new Restaurant(RESTAURANT1_ID + 2, restaurant3, List.of(vote2));
+    public static final Restaurant restaurantWithVote3 = new Restaurant(restaurant3, vote2);
 
     public static final List<Restaurant> restaurants = List.of(restaurant1, restaurant2, restaurant3);
 

@@ -44,11 +44,11 @@ public class Restaurant extends NamedEntity {
         this.created = created;
     }
 
-    public Restaurant(Integer id, Restaurant restaurant, Collection<Vote> votes) {
-        super(id, restaurant.getName());
+    public Restaurant(Restaurant restaurant, Vote... votes) {
+        super(restaurant.getId(), restaurant.getName());
         this.address = restaurant.getAddress();
         this.created = restaurant.getCreated();
-        this.setVotes(votes);
+        this.setVotes(Arrays.asList(votes));
     }
 
     public Restaurant(Restaurant restaurant, Collection<MenuItem> menuItems) {
