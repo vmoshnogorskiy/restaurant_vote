@@ -3,7 +3,6 @@ package ru.javaops.votes.repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.votes.error.DataConflictException;
-import ru.javaops.votes.model.Meal;
 import ru.javaops.votes.model.Vote;
 
 import java.util.List;
