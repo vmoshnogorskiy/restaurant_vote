@@ -22,13 +22,13 @@ import org.springframework.context.annotation.Configuration;
                 title = "REST API documentation",
                 version = "1.0",
                 description = """
-                        Calories Management application (<a href='https://javaops.ru/view/topjava'>TopJava</a>) Spring Boot migration
-                        <p><b>Тестовые креденшелы:</b><br>
+                        Restaurant Vote REST Application
+                        <p><b>Credentials for tests:</b><br>
                         - user@yandex.ru / password<br>
                         - admin@gmail.com / admin<br>
                         - guest@gmail.com / guest</p>
                         """,
-                contact = @Contact(url = "https://javaops.ru/#contacts", name = "Grigory Kislin", email = "admin@javaops.ru")
+                contact = @Contact(name = "Moshnogorskiy Vladimir", email = "il75ich@yandex.ru")
         ),
         security = @SecurityRequirement(name = "basicAuth")
 )

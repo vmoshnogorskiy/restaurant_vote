@@ -20,10 +20,6 @@ public class VotesUtil {
         return Optional.of(new VoteTo(vote.getId(), vote.getDate(), vote.getRestaurant().getId(), vote.getUser().getId(), vote.getRestaurant().getName()));
     }
 
-    public static Vote createNewFromTo(VoteTo voteTo) {
-        return new Vote(null, LocalDate.now(), null, null);
-    }
-
     public static void updateVote(Vote vote, Restaurant restaurant, User user) {
         vote.setRestaurant(restaurant);
         vote.setUser(user);
