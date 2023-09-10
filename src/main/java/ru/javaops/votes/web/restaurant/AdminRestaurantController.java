@@ -3,6 +3,8 @@ package ru.javaops.votes.web.restaurant;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,7 @@ public class AdminRestaurantController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(cacheManager = "restaurantCacheManager", value = "restaurant", key = "#id")
     public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("delete restaurant {} for user {}", id, authUser.id());
         restaurantRepository.deleteExisted(id);
@@ -41,6 +44,7 @@ public class AdminRestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CachePut(cacheManager = "restaurantCacheManager", value = "restaurant", key = "#restaurant.id")
     public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         int userId = authUser.id();
         log.info("update restaurant {} for user {}", id, userId);
