@@ -1,6 +1,6 @@
 package ru.javaops.votes.repository;
 
-import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,7 +28,7 @@ public interface UserRepository extends BaseRepository<User> {
     @Override
     @Modifying
     @Transactional
-    @CachePut(value = "users", key = "#user.email")
+    @CacheEvict(value = "users", allEntries = true)
     User save(User user);
 
     default User getExistedByEmail(String email) {
