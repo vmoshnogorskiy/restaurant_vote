@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 @Entity
@@ -17,7 +19,7 @@ public class MenuItem extends NamedEntity {
 
     @Column(name = "price", nullable = false, columnDefinition = "NUMERIC(9, 2)")
     @NotNull
-    private float price;
+    private BigDecimal price;
 
     @Column(name = "actual_date", nullable = false, columnDefinition = "timestamp default now()")
     @JsonIgnore
@@ -29,12 +31,12 @@ public class MenuItem extends NamedEntity {
     private Restaurant restaurant;
 
     public MenuItem(MenuItem menuItem) {
-        this(menuItem.id, menuItem.name, menuItem.price, menuItem.actualDate, menuItem.restaurant);
+        this(menuItem.id, menuItem.name, menuItem.price.toString(), menuItem.actualDate, menuItem.restaurant);
     }
 
-    public MenuItem(Integer id, String name, float price, LocalDate actualDate, Restaurant restaurant) {
+    public MenuItem(Integer id, String name, String price, LocalDate actualDate, Restaurant restaurant) {
         super(id, name);
-        this.price = price;
+        this.price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP);
         this.actualDate = actualDate;
         this.restaurant = restaurant;
     }
