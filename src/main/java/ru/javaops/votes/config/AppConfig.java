@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 @Configuration
 @Slf4j
 @EnableCaching
-// TODO: cache only most requested data!
+
 public class AppConfig {
 
     @Profile("!test")

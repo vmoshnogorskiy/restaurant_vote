@@ -72,7 +72,6 @@ public class RestExceptionHandler {
         return processException(ex, request, Map.of("invalid_params", getErrorMap(ex.getBindingResult())));
     }
 
-    //   https://howtodoinjava.com/spring-mvc/spring-problemdetail-errorresponse/#5-adding-problemdetail-to-custom-exceptions
     @ExceptionHandler(Exception.class)
     ProblemDetail exception(Exception ex, HttpServletRequest request) {
         return processException(ex, request, Map.of());
