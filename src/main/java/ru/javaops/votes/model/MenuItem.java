@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"restaurant"})
+@ToString(callSuper = true)
 public class MenuItem extends NamedEntity {
 
     @Column(name = "price", nullable = false, columnDefinition = "NUMERIC(9, 2)")
@@ -28,11 +28,8 @@ public class MenuItem extends NamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @JsonIgnore
+    @ToString.Exclude
     private Restaurant restaurant;
-
-    public MenuItem(MenuItem menuItem) {
-        this(menuItem.id, menuItem.name, menuItem.price.toString(), menuItem.actualDate, menuItem.restaurant);
-    }
 
     public MenuItem(Integer id, String name, String price, LocalDate actualDate, Restaurant restaurant) {
         super(id, name);

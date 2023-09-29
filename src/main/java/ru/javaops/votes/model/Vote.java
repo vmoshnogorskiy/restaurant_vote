@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@ToString(callSuper = true, exclude = {"restaurant"})
+@ToString(callSuper = true)
 public class Vote extends BaseEntity {
 
     @Column(name = "actual_date", nullable = false, columnDefinition = "Date")
@@ -25,10 +25,11 @@ public class Vote extends BaseEntity {
     @JsonIgnore
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     @JsonIgnore
+    @ToString.Exclude
     private Restaurant restaurant;
 
     public Vote(Vote v) {

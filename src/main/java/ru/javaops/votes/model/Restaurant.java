@@ -22,7 +22,7 @@ import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"menu"})
+@ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Restaurant extends NamedEntity {
 
@@ -37,6 +37,7 @@ public class Restaurant extends NamedEntity {
 
     @Hidden
     @OneToMany(mappedBy = "restaurant")
+    @ToString.Exclude
     private Set<MenuItem> menu;
 
     @Hidden
