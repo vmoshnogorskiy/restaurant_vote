@@ -42,7 +42,7 @@ public class VoteController {
     @GetMapping
     public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAll votes for user {}", authUser.id());
-        List<Vote> votes = voteRepository.getAll();
+        List<Vote> votes = voteRepository.getAll(authUser.id());
         return votes.stream()
                 .map(VotesUtil::createTo)
                 .collect(Collectors.toList());

@@ -7,6 +7,7 @@ import com.github.vmoshnogorskiy.votes.web.restaurant.RestaurantTestData;
 import com.github.vmoshnogorskiy.votes.web.user.UserTestData;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 public class VoteTestData {
@@ -21,7 +22,9 @@ public class VoteTestData {
 
     public static final Vote vote2 = new Vote(VOTE1_ID + 1, LocalDate.now(), RestaurantTestData.restaurant3, UserTestData.admin);
 
-    public static final List<Vote> votes = List.of(vote1, vote2);
+    public static final Vote vote3 = new Vote(VOTE1_ID + 2, LocalDate.of(2023, Month.SEPTEMBER, 5), RestaurantTestData.restaurant2, UserTestData.user);
+
+    public static final List<Vote> votes = List.of(vote1, vote3);
 
     public static VoteTo getUpdatedVoteTo() {
         return new VoteTo(VOTE1_ID, LocalDate.now(), RestaurantTestData.RESTAURANT1_ID, UserTestData.USER_ID, "Река");

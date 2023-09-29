@@ -11,8 +11,8 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface VoteRepository extends BaseRepository<Vote> {
 
-    @Query("SELECT v FROM Vote v WHERE v.actualDate = current_date")
-    List<Vote> getAll();
+    @Query("SELECT v FROM Vote v JOIN FETCH v.user WHERE v.user.id = ?1")
+    List<Vote> getAll(int userId);
 
     @Query("SELECT COUNT(v) FROM Vote v WHERE v.restaurant.id=?1 AND v.actualDate = current_date")
     Integer getVotesCount(int id);
