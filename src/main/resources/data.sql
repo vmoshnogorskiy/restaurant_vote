@@ -28,7 +28,7 @@ VALUES ('Суп сельский', 180.00, now(), 1),
        ('Чай черный', 70.00, now(), 2),
        ('Чай черный', 80.00, now(), 3);
 
-INSERT INTO vote (date, restaurant_id, user_id)
+INSERT INTO vote (actual_date, restaurant_id, user_id)
 VALUES (now(), 2, 1),
        (now(), 3, 2),
        ('2023-09-05', 2, 1);

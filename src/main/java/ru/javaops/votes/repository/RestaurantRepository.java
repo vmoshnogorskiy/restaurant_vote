@@ -12,6 +12,6 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
     @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menu m WHERE m.actualDate = current_date ORDER BY r.created DESC")
     List<Restaurant> getAllWithMenuItems();
 
-    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.votes v WHERE v.date = current_date ORDER BY r.created DESC")
+    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.votes v WHERE v.actualDate = current_date ORDER BY r.created DESC")
     List<Restaurant> getAllWithVotes();
 }

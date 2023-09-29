@@ -46,10 +46,10 @@ CREATE TABLE menu_item
 CREATE TABLE vote
 (
     id              INTEGER AUTO_INCREMENT PRIMARY KEY,
-    date            Date           NOT NULL,
+    actual_date     Date           NOT NULL,
     restaurant_id   INTEGER        NOT NULL,
     user_id         INTEGER        NOT NULL,
-    CONSTRAINT vote_user_date_idx UNIQUE (user_id, date),
+    CONSTRAINT vote_user_actual_date_idx UNIQUE (user_id, actual_date),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );

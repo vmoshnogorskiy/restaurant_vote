@@ -15,9 +15,9 @@ import java.time.LocalDate;
 @ToString(callSuper = true, exclude = {"restaurant"})
 public class Vote extends BaseEntity {
 
-    @Column(name = "date", nullable = false, columnDefinition = "Date")
+    @Column(name = "actual_date", nullable = false, columnDefinition = "Date")
     @NotNull
-    private LocalDate date;
+    private LocalDate actualDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -32,12 +32,12 @@ public class Vote extends BaseEntity {
     private Restaurant restaurant;
 
     public Vote(Vote v) {
-        this(v.id, v.date, v.restaurant, v.user);
+        this(v.id, v.actualDate, v.restaurant, v.user);
     }
 
-    public Vote(Integer id, LocalDate date, Restaurant restaurant, User user) {
+    public Vote(Integer id, LocalDate actualDate, Restaurant restaurant, User user) {
         super(id);
-        this.date = date;
+        this.actualDate = actualDate;
         this.restaurant = restaurant;
         this.user = user;
     }

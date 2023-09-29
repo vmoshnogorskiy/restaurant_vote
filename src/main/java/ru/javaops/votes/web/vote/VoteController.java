@@ -104,7 +104,7 @@ public class VoteController {
     private void validateUpdateConstraint(int userId, int id) {
         Vote vote = voteRepository.getExistedOrBelonged(userId, id);
         int hour = LocalDateTime.now().getHour();
-        if (LocalDate.now().isAfter(vote.getDate()) || hour >= hourAfterNotChangeVote) {
+        if (LocalDate.now().isAfter(vote.getActualDate()) || hour >= hourAfterNotChangeVote) {
             throw new DataConflictException("the vote cannot be changed today after " + hourAfterNotChangeVote + ":00 am or later");
         }
     }

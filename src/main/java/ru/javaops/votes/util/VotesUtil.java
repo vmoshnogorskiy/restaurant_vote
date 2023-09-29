@@ -13,16 +13,16 @@ import java.util.Optional;
 public class VotesUtil {
 
     public static VoteTo createTo(Vote vote) {
-        return new VoteTo(vote.getId(), vote.getDate(), vote.getRestaurant().getId(), vote.getUser().getId(), vote.getRestaurant().getName());
+        return new VoteTo(vote.getId(), vote.getActualDate(), vote.getRestaurant().getId(), vote.getUser().getId(), vote.getRestaurant().getName());
     }
 
     public static Optional<VoteTo> createToOptional(Vote vote) {
-        return Optional.of(new VoteTo(vote.getId(), vote.getDate(), vote.getRestaurant().getId(), vote.getUser().getId(), vote.getRestaurant().getName()));
+        return Optional.of(new VoteTo(vote.getId(), vote.getActualDate(), vote.getRestaurant().getId(), vote.getUser().getId(), vote.getRestaurant().getName()));
     }
 
     public static void updateVote(Vote vote, Restaurant restaurant, User user) {
         vote.setRestaurant(restaurant);
         vote.setUser(user);
-        vote.setDate(LocalDate.now());
+        vote.setActualDate(LocalDate.now());
     }
 }

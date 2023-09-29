@@ -14,7 +14,7 @@ import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 public class VoteTo extends BaseTo {
 
     @Schema(accessMode = READ_ONLY)
-    LocalDate date;
+    LocalDate actualDate;
     @NotNull
     Integer restaurantId;
 
@@ -24,9 +24,9 @@ public class VoteTo extends BaseTo {
     @Schema(accessMode = READ_ONLY)
     String restaurantName;
 
-    public VoteTo(Integer id, LocalDate date, Integer restaurantId, Integer userId, String restaurantName) {
+    public VoteTo(Integer id, LocalDate actualDate, Integer restaurantId, Integer userId, String restaurantName) {
         super(id);
-        this.date = date;
+        this.actualDate = actualDate;
         this.restaurantId = restaurantId;
         this.userId = userId;
         this.restaurantName = restaurantName;
