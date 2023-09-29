@@ -48,22 +48,10 @@ public class RestaurantController {
         return ResponseEntity.of(restaurantRepository.findById(id));
     }
 
-    @GetMapping("/with-menuitems")
-    public List<Restaurant> getAllWithMenuItems(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("get all restaurants with MenuItems for user {}", authUser.id());
-        return restaurantRepository.getAllWithMenuItems();
-    }
-
     @GetMapping("/{id}/menuitems")
     public List<MenuItem> getAllMenuItems(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("getAll menu items for restaurant {} and user {}", id, authUser.id());
         return menuItemRepository.getAllMenuItems(id);
-    }
-
-    @GetMapping("/with-votes")
-    public List<Restaurant> getAllWithVotes(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("get all restaurants with votes for user {}", authUser.id());
-        return restaurantRepository.getAllWithVotes();
     }
 
     @GetMapping("/with-count-votes")
