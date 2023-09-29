@@ -22,7 +22,7 @@ public class RestaurantTestData {
             MatcherFactory.usingAssertions(Restaurant.class,
                     (a, e) -> { throw new UnsupportedOperationException();},
                     (a, e) -> assertThat(a).usingRecursiveComparison()
-                            .ignoringFields("votes", "menu.restaurant", "menu.updated").isEqualTo(e)
+                            .ignoringFields("votes", "menu.restaurant", "menu.actualDate").isEqualTo(e)
                     );
 
     public static MatcherFactory.Matcher<Restaurant> RESTAURANT_WITH_VOTES_MATCHER =

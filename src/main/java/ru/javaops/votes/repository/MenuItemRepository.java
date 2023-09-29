@@ -9,6 +9,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface MenuItemRepository extends BaseRepository<MenuItem> {
 
-    @Query("SELECT mi FROM MenuItem mi WHERE mi.restaurant.id=?1 AND cast(mi.updated as date) = current_date ORDER BY mi.updated DESC")
+    @Query("SELECT mi FROM MenuItem mi WHERE mi.restaurant.id=?1 AND mi.actualDate = current_date ORDER BY mi.actualDate DESC")
     List<MenuItem> getAllMenuItems(int id);
 }

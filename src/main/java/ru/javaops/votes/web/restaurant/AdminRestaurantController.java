@@ -17,6 +17,7 @@ import ru.javaops.votes.repository.RestaurantRepository;
 import ru.javaops.votes.web.AuthUser;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static ru.javaops.votes.util.validation.ValidationUtil.assureIdConsistent;
@@ -77,7 +78,7 @@ public class AdminRestaurantController {
         int userId = authUser.id();
         log.info("create new menu item by restaurant {} for user {}", id, userId);
         checkNew(item);
-        item.setUpdated(LocalDateTime.now());
+        item.setActualDate(LocalDate.now());
         item.setRestaurant(restaurantRepository.getExisted(id));
         MenuItem created = menuItemRepository.save(item);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -93,7 +94,7 @@ public class AdminRestaurantController {
         int userId = authUser.id();
         log.info("update menu item {} by restaurant {} for user {}", menuId, id, userId);
         assureIdConsistent(item, menuId);
-        item.setUpdated(LocalDateTime.now());
+        item.setActualDate(LocalDate.now());
         item.setRestaurant(restaurantRepository.getExisted(id));
         menuItemRepository.save(item);
     }

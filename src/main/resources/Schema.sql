@@ -37,7 +37,7 @@ CREATE TABLE menu_item
     id              INTEGER AUTO_INCREMENT PRIMARY KEY,
     name            VARCHAR        NOT NULL,
     price           NUMERIC(9, 2)  NOT NULL,
-    updated         TIMESTAMP DEFAULT now() NOT NULL,
+    actual_date     DATE DEFAULT   NOT NULL,
     restaurant_id   INTEGER        NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );

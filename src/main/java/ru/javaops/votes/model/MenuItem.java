@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "menu_item", schema = "public")
@@ -19,9 +19,9 @@ public class MenuItem extends NamedEntity {
     @NotNull
     private float price;
 
-    @Column(name = "updated", nullable = false, columnDefinition = "timestamp default now()")
+    @Column(name = "actual_date", nullable = false, columnDefinition = "timestamp default now()")
     @JsonIgnore
-    private LocalDateTime updated;
+    private LocalDate actualDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -29,13 +29,13 @@ public class MenuItem extends NamedEntity {
     private Restaurant restaurant;
 
     public MenuItem(MenuItem menuItem) {
-        this(menuItem.id, menuItem.name, menuItem.price, menuItem.updated, menuItem.restaurant);
+        this(menuItem.id, menuItem.name, menuItem.price, menuItem.actualDate, menuItem.restaurant);
     }
 
-    public MenuItem(Integer id, String name, float price, LocalDateTime updated, Restaurant restaurant) {
+    public MenuItem(Integer id, String name, float price, LocalDate actualDate, Restaurant restaurant) {
         super(id, name);
         this.price = price;
-        this.updated = updated;
+        this.actualDate = actualDate;
         this.restaurant = restaurant;
     }
 }

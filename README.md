@@ -15,15 +15,12 @@ o	If it is before 11:00 we assume that he changed his mind.
 o	If it is after 11:00 then it is too late, vote can't be changed
 Each restaurant provides a new menu each day.
 
--------------------------------------------------------------
-
+-----------------------------------------------------
 - Stack: [JDK 17](http://jdk.java.net/17/), Spring Boot 3.1.x, Lombok, H2, Caffeine Cache, Swagger/OpenAPI 3.0
 - Run: `mvn spring-boot:run` in root directory.
-
 -----------------------------------------------------
-[REST API documentation](http://localhost:8080/)  
+[REST API documentation](http://localhost:8080/)
 credentials:
-
 ```
 Admin: admin@gmail.com / admin
 User:  user@yandex.ru / password
