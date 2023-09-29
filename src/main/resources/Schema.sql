@@ -29,7 +29,8 @@ CREATE TABLE restaurant
     id              INTEGER AUTO_INCREMENT PRIMARY KEY,
     name            VARCHAR                 NOT NULL,
     address         VARCHAR                 NOT NULL,
-    created         TIMESTAMP DEFAULT now() NOT NULL
+    created         TIMESTAMP DEFAULT now() NOT NULL,
+    CONSTRAINT restaurant_name_address_idx UNIQUE (name, address)
 );
 
 CREATE TABLE menu_item
@@ -41,7 +42,6 @@ CREATE TABLE menu_item
     restaurant_id   INTEGER        NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
---CREATE UNIQUE INDEX menu_unique_restaurant_updated_idx ON menu_item (restaurant_id, updated);
 
 CREATE TABLE vote
 (
