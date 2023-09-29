@@ -12,13 +12,13 @@ import java.util.Optional;
 public interface VoteRepository extends BaseRepository<Vote> {
 
     @Query("SELECT v FROM Vote v WHERE v.actualDate = current_date")
-    List<Vote> getAllVotes();
+    List<Vote> getAll();
 
     @Query("SELECT COUNT(v) FROM Vote v WHERE v.restaurant.id=?1 AND v.actualDate = current_date")
     Integer getVotesCount(int id);
 
     @Query("SELECT v FROM Vote v WHERE v.user.id=?1 AND v.actualDate = current_date")
-    Vote findVoteByUserToday(int userId);
+    Vote findByUserToday(int userId);
 
     @Query("SELECT v FROM Vote v JOIN FETCH v.user WHERE v.id = :id and v.user.id = :userId")
     Optional<Vote> get(int userId, int id);

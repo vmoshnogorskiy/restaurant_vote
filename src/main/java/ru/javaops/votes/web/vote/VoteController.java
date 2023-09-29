@@ -37,16 +37,16 @@ public class VoteController {
 
     static final String REST_URL = "/api/votes";
 
-    static int hourAfterNotChangeVote = 11;
+    private static int hourAfterNotChangeVote = 11;
 
     private final VoteRepository voteRepository;
 
     private final RestaurantRepository restaurantRepository;
 
     @GetMapping
-    public List<VoteTo> getAllVotes(@AuthenticationPrincipal AuthUser authUser) {
+    public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAll votes for user {}", authUser.id());
-        List<Vote> votes = voteRepository.getAllVotes();
+        List<Vote> votes = voteRepository.getAll();
         return votes.stream()
                 .map(VotesUtil::createTo)
                 .collect(Collectors.toList());
@@ -60,7 +60,7 @@ public class VoteController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteVote(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
+    public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         int userId = authUser.id();
         log.info("delete vote {} for user {}", id, userId);
         validateUpdateConstraint(userId, id);
@@ -68,7 +68,7 @@ public class VoteController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VoteTo> addVote(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo) {
+    public ResponseEntity<VoteTo> add(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo) {
         log.info("create new vote for user {}", authUser.id());
         checkNew(voteTo);
         validateAddConstraint(authUser.getUser());
@@ -84,7 +84,7 @@ public class VoteController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateVote(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo, @PathVariable int id) {
+    public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo, @PathVariable int id) {
         int userId = authUser.id();
         log.info("update vote {} for user {}", id, userId);
         assureIdConsistent(voteTo, id);
@@ -94,8 +94,12 @@ public class VoteController {
         voteRepository.save(vote);
     }
 
+    protected static void setHourAfterNotChangeVote(int hour) {
+        VoteController.hourAfterNotChangeVote = hour;
+    }
+
     private void validateAddConstraint(User user) {
-        Vote vote = voteRepository.findVoteByUserToday(user.id());
+        Vote vote = voteRepository.findByUserToday(user.id());
         if (vote != null) {
             throw new DataConflictException("The user with login " + user.getEmail() + " has already voted today");
         }

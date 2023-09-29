@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.javaops.votes.util.VotesUtil.createToOptional;
 import static ru.javaops.votes.web.user.UserTestData.*;
 import static ru.javaops.votes.web.vote.VoteController.REST_URL;
-import static ru.javaops.votes.web.vote.VoteController.hourAfterNotChangeVote;
+import static ru.javaops.votes.web.vote.VoteController.setHourAfterNotChangeVote;
 import static ru.javaops.votes.web.vote.VoteTestData.*;
 
 class VoteControllerTest extends AbstractControllerTest {
@@ -32,7 +32,7 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
-    void getAllVotes() throws Exception {
+    void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -58,8 +58,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
-    void deleteVote() throws Exception {
-        hourAfterNotChangeVote = LocalDateTime.now().getHour() + 1;
+    void delete() throws Exception {
+        setHourAfterNotChangeVote(LocalDateTime.now().getHour() + 1);
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + VOTE1_ID))
                 .andExpect(status().isNoContent());
         assertFalse(voteRepository.get(USER_ID, VOTE1_ID).isPresent());
@@ -67,8 +67,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
-    void deleteVoteAfterNotChangeHour() throws Exception {
-        hourAfterNotChangeVote = LocalDateTime.now().getHour() - 1;
+    void deleteAfterNotChangeHour() throws Exception {
+        setHourAfterNotChangeVote(LocalDateTime.now().getHour() - 1);
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + VOTE1_ID))
                 .andExpect(status().isConflict());
         assertTrue(voteRepository.get(USER_ID, VOTE1_ID).isPresent());
@@ -76,8 +76,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = GUEST_MAIL)
-    void deleteVoteOtherUser() throws Exception {
-        hourAfterNotChangeVote = LocalDateTime.now().getHour() + 1;
+    void deleteOtherUser() throws Exception {
+        setHourAfterNotChangeVote(LocalDateTime.now().getHour() + 1);
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + VOTE1_ID))
                 .andExpect(status().isConflict());
         assertTrue(voteRepository.get(USER_ID, VOTE1_ID).isPresent());
@@ -85,7 +85,7 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = GUEST_MAIL)
-    void addVote() throws Exception {
+    void add() throws Exception {
         VoteTo newVoteTo = getNewVoteTo();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -100,8 +100,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
-    void updateVote() throws Exception {
-        hourAfterNotChangeVote = LocalDateTime.now().getHour() + 1;
+    void update() throws Exception {
+        setHourAfterNotChangeVote(LocalDateTime.now().getHour() + 1);
         VoteTo updated = getUpdatedVoteTo();
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + VOTE1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -112,8 +112,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
-    void updateVoteAfterNotChangeHour() throws Exception {
-        hourAfterNotChangeVote = LocalDateTime.now().getHour() - 1;
+    void updateAfterNotChangeHour() throws Exception {
+        setHourAfterNotChangeVote(LocalDateTime.now().getHour() - 1);
         VoteTo updated = getUpdatedVoteTo();
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + VOTE1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -123,8 +123,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-    void updateVoteOtherUser() throws Exception {
-        hourAfterNotChangeVote = LocalDateTime.now().getHour() + 1;
+    void updateForOtherUser() throws Exception {
+        setHourAfterNotChangeVote(LocalDateTime.now().getHour() + 1);
         VoteTo updated = getUpdatedVoteTo();
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + VOTE1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
