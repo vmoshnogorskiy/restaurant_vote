@@ -1,4 +1,4 @@
-package com.github.vmoshnogorskiy.votes.web.restaurant;
+package com.github.vmoshnogorskiy.votes.web.menu;
 
 import com.github.vmoshnogorskiy.votes.model.MenuItem;
 import com.github.vmoshnogorskiy.votes.web.MatcherFactory;
@@ -27,7 +27,8 @@ public class MenuItemTestData {
 
     public static final MenuItem menuItem7 = new MenuItem(MENU_ITEM1_ID + 6, "Чай черный", "80.00", java.time.LocalDate.now(), restaurant3);
 
-    public static final List<MenuItem> menuItems = List.of(menuItem3, menuItem4, menuItem6);
+//    public static final List<MenuItem> menuItems = List.of(menuItem3, menuItem4, menuItem6);
+    public static final List<MenuItem> menuItems = List.of(menuItem1, menuItem2, menuItem3, menuItem4, menuItem5, menuItem6, menuItem7);
 
     public static MenuItem getNew() {
         return new MenuItem(null, "Чай черный", "100.00", java.time.LocalDate.now(), restaurant1);

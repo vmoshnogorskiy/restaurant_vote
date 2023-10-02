@@ -10,8 +10,6 @@ import com.github.vmoshnogorskiy.votes.web.AbstractControllerTest;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static com.github.vmoshnogorskiy.votes.web.restaurant.MenuItemTestData.MENU_ITEM_MATCHER;
-import static com.github.vmoshnogorskiy.votes.web.restaurant.MenuItemTestData.menuItems;
 import static com.github.vmoshnogorskiy.votes.web.restaurant.RestaurantTestData.*;
 
 class RestaurantControllerTest extends AbstractControllerTest {
@@ -54,17 +52,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
-    void getAllMenuItems() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + (RESTAURANT1_ID + 1) + "/menuitems"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MENU_ITEM_MATCHER.contentJson(menuItems));
-    }
-
-    @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
-    void getRestaurantsWithCountVotes() throws Exception {
+    void getWithCountVotes() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "with-count-votes"))
                 .andExpect(status().isOk())
                 .andDo(print())

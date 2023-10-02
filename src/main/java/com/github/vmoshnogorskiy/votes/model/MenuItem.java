@@ -23,12 +23,14 @@ public class MenuItem extends NamedEntity {
 
     @Column(name = "actual_date", nullable = false, columnDefinition = "timestamp default now()")
     @JsonIgnore
+    @NotNull
     private LocalDate actualDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @JsonIgnore
     @ToString.Exclude
+    @NotNull
     private Restaurant restaurant;
 
     public MenuItem(Integer id, String name, String price, LocalDate actualDate, Restaurant restaurant) {

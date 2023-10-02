@@ -10,5 +10,5 @@ import java.util.List;
 public interface MenuItemRepository extends BaseRepository<MenuItem> {
 
     @Query("SELECT mi FROM MenuItem mi WHERE mi.restaurant.id=?1 AND mi.actualDate = current_date")
-    List<MenuItem> getAllMenuItems(int id);
+    List<MenuItem> getAllByRestaurantToday(int id);
 }

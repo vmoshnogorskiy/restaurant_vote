@@ -7,9 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import com.github.vmoshnogorskiy.votes.model.MenuItem;
 import com.github.vmoshnogorskiy.votes.model.Restaurant;
-import com.github.vmoshnogorskiy.votes.repository.MenuItemRepository;
 import com.github.vmoshnogorskiy.votes.repository.RestaurantRepository;
 import com.github.vmoshnogorskiy.votes.repository.VoteRepository;
 import com.github.vmoshnogorskiy.votes.to.RestaurantTo;
@@ -30,8 +28,6 @@ public class RestaurantController {
 
     private final RestaurantRepository restaurantRepository;
 
-    private final MenuItemRepository menuItemRepository;
-
     private final VoteRepository voteRepository;
 
     @GetMapping
@@ -48,14 +44,8 @@ public class RestaurantController {
         return ResponseEntity.of(restaurantRepository.findById(id));
     }
 
-    @GetMapping("/{id}/menuitems")
-    public List<MenuItem> getAllMenuItems(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
-        log.info("getAll menu items for restaurant {} and user {}", id, authUser.id());
-        return menuItemRepository.getAllMenuItems(id);
-    }
-
     @GetMapping("/with-count-votes")
-    public List<RestaurantTo> getRestaurantsWithCountVotes(@AuthenticationPrincipal AuthUser authUser) {
+    public List<RestaurantTo> getWithCountVotes(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get restaurants with countVotes for user {}", authUser.id());
         List<Restaurant> restaurants = restaurantRepository.findAll();
         return restaurants.stream()
