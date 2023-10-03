@@ -49,4 +49,14 @@ class MenuItemControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL_SLASH + MENU_ITEM1_ID))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    @WithUserDetails(value = UserTestData.USER_MAIL)
+    void getFilter() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "filter?startDate=2023-01-01&endDate=2023-01-01"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MENU_ITEM_TO_MATCHER.contentJson(menuItemsToFiltered));
+    }
 }

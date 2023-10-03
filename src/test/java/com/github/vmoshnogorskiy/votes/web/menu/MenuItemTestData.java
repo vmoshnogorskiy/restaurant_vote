@@ -3,6 +3,8 @@ package com.github.vmoshnogorskiy.votes.web.menu;
 import com.github.vmoshnogorskiy.votes.model.MenuItem;
 import com.github.vmoshnogorskiy.votes.to.MenuItemTo;
 import com.github.vmoshnogorskiy.votes.web.MatcherFactory;
+
+import java.time.Month;
 import java.util.List;
 
 import static com.github.vmoshnogorskiy.votes.web.restaurant.RestaurantTestData.*;
@@ -26,28 +28,23 @@ public class MenuItemTestData {
 
     public static final MenuItem menuItem5 = new MenuItem(MENU_ITEM1_ID + 4, "Котлета из говядины", "125", java.time.LocalDate.now(), restaurant3);
 
-    public static final MenuItem menuItem6 = new MenuItem(MENU_ITEM1_ID + 5, "Чай черный", "70.0", java.time.LocalDate.now(), restaurant2);
+    public static final MenuItem menuItem6 = new MenuItem(MENU_ITEM1_ID + 5, "Чай черный", "70.0", java.time.LocalDate.of(2023, Month.JANUARY, 1), restaurant2);
 
-    public static final MenuItem menuItem7 = new MenuItem(MENU_ITEM1_ID + 6, "Чай черный", "80.00", java.time.LocalDate.now(), restaurant3);
+    public static final MenuItem menuItem7 = new MenuItem(MENU_ITEM1_ID + 6, "Чай черный", "80.00", java.time.LocalDate.of(2023, Month.JANUARY, 1), restaurant3);
 
     public static final MenuItemTo menuItemTo1 = createTo(menuItem1);
 
-//    public static final List<MenuItem> menuItems = List.of(menuItem3, menuItem4, menuItem6);
-    public static final List<MenuItem> menuItems = List.of(menuItem1, menuItem2, menuItem3, menuItem4, menuItem5, menuItem6, menuItem7);
+    public static final List<MenuItemTo> menuItemsToFiltered = List.of(createTo(menuItem6), createTo(menuItem7));
 
     public static final List<MenuItemTo> menuItemTos = List.of(createTo(menuItem1), createTo(menuItem2),
             createTo(menuItem3), createTo(menuItem4), createTo(menuItem5), createTo(menuItem6), createTo(menuItem7));
 
-    public static MenuItem getNew() {
-        return new MenuItem(null, "Чай черный", "100.00", java.time.LocalDate.now(), restaurant1);
+    public static MenuItemTo getWithoutRestaurant() {
+        return new MenuItemTo(null, "Чай черный", "100.00", java.time.LocalDate.now(), null);
     }
 
     public static MenuItemTo getNewTo() {
         return new MenuItemTo(null, "Чай черный", "100.00", java.time.LocalDate.now(), RESTAURANT1_ID);
-    }
-
-    public static MenuItem getUpdated() {
-        return new MenuItem(MENU_ITEM1_ID, "Чай зеленый", "120.00", java.time.LocalDate.now(), restaurant1);
     }
 
     public static MenuItemTo getUpdatedTo() {

@@ -56,6 +56,16 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
+    void addWithoutRestaurant() throws Exception {
+        MenuItemTo newMenuItemTo = MenuItemTestData.getWithoutRestaurant();
+        perform(MockMvcRequestBuilders.post(AdminMenuItemController.REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newMenuItemTo)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void addForbidden() throws Exception {
         perform(MockMvcRequestBuilders.post(AdminMenuItemController.REST_URL))

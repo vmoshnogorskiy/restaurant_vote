@@ -25,7 +25,7 @@ public class MenuItem extends NamedEntity {
     @NotNull
     private LocalDate actualDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @JsonIgnore
     @ToString.Exclude

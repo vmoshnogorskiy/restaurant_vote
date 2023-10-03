@@ -4,11 +4,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import com.github.vmoshnogorskiy.votes.model.MenuItem;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Transactional(readOnly = true)
 public interface MenuItemRepository extends BaseRepository<MenuItem> {
 
-    @Query("SELECT mi FROM MenuItem mi WHERE mi.restaurant.id=?1 AND mi.actualDate = current_date")
-    List<MenuItem> getAllByRestaurantToday(int id);
+    @Query("SELECT mi FROM MenuItem mi WHERE mi.actualDate >= :startDate AND mi.actualDate <= :endDate")
+    List<MenuItem> getBetween(LocalDate startDate, LocalDate endDate);
 }
