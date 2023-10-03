@@ -1,7 +1,7 @@
 package com.github.vmoshnogorskiy.votes.web.menu;
 
-import com.github.vmoshnogorskiy.votes.model.MenuItem;
 import com.github.vmoshnogorskiy.votes.repository.MenuItemRepository;
+import com.github.vmoshnogorskiy.votes.to.MenuItemTo;
 import com.github.vmoshnogorskiy.votes.util.JsonUtil;
 import com.github.vmoshnogorskiy.votes.web.AbstractControllerTest;
 import com.github.vmoshnogorskiy.votes.web.restaurant.RestaurantTestData;
@@ -13,8 +13,10 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.github.vmoshnogorskiy.votes.web.restaurant.RestaurantTestData.restaurant1;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.github.vmoshnogorskiy.votes.util.MenuItemUtil.createFromTo;
 
 class AdminMenuItemControllerTest extends AbstractControllerTest {
 
@@ -41,16 +43,16 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void add() throws Exception {
-        MenuItem newMenuItem = MenuItemTestData.getNew();
+        MenuItemTo newMenuItemTo = MenuItemTestData.getNewTo();
         ResultActions action = perform(MockMvcRequestBuilders.post(AdminMenuItemController.REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newMenuItem)));
+                .content(JsonUtil.writeValue(newMenuItemTo)));
 
-        MenuItem created = MenuItemTestData.MENU_ITEM_MATCHER.readFromJson(action);
+        MenuItemTo created = MenuItemTestData.MENU_ITEM_TO_MATCHER.readFromJson(action);
         int newId = created.id();
-        newMenuItem.setId(newId);
-        MenuItemTestData.MENU_ITEM_MATCHER.assertMatch(created, newMenuItem);
-        MenuItemTestData.MENU_ITEM_MATCHER.assertMatch(repository.getExisted(newId), newMenuItem);
+        newMenuItemTo.setId(newId);
+        MenuItemTestData.MENU_ITEM_TO_MATCHER.assertMatch(created, newMenuItemTo);
+        MenuItemTestData.MENU_ITEM_MATCHER.assertMatch(repository.getExisted(newId), createFromTo(newMenuItemTo, restaurant1));
     }
 
     @Test
@@ -63,12 +65,12 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void update() throws Exception {
-        MenuItem updated = MenuItemTestData.getUpdated();
+        MenuItemTo updated = MenuItemTestData.getUpdatedTo();
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + MenuItemTestData.MENU_ITEM1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
-        MenuItemTestData.MENU_ITEM_MATCHER.assertMatch(repository.getExisted(RestaurantTestData.RESTAURANT1_ID), updated);
+        MenuItemTestData.MENU_ITEM_MATCHER.assertMatch(repository.getExisted(RestaurantTestData.RESTAURANT1_ID), createFromTo(updated, restaurant1));
     }
 
     @Test

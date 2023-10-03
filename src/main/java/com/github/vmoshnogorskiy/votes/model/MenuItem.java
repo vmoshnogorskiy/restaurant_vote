@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Table(name = "menu_item", schema = "public")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString(callSuper = true)
 public class MenuItem extends NamedEntity {
 
@@ -22,7 +22,6 @@ public class MenuItem extends NamedEntity {
     private BigDecimal price;
 
     @Column(name = "actual_date", nullable = false, columnDefinition = "timestamp default now()")
-    @JsonIgnore
     @NotNull
     private LocalDate actualDate;
 

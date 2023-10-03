@@ -2,6 +2,9 @@ package com.github.vmoshnogorskiy.votes.web.menu;
 
 import com.github.vmoshnogorskiy.votes.model.MenuItem;
 import com.github.vmoshnogorskiy.votes.repository.MenuItemRepository;
+import com.github.vmoshnogorskiy.votes.repository.RestaurantRepository;
+import com.github.vmoshnogorskiy.votes.to.MenuItemTo;
+import com.github.vmoshnogorskiy.votes.util.MenuItemUtil;
 import com.github.vmoshnogorskiy.votes.web.AuthUser;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -28,6 +31,8 @@ public class AdminMenuItemController {
 
     private final MenuItemRepository repository;
 
+    private final RestaurantRepository restaurantRepository;
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
@@ -36,13 +41,12 @@ public class AdminMenuItemController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuItem> add(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody MenuItem item) {
+    public ResponseEntity<MenuItemTo> add(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody MenuItemTo itemTo) {
         int userId = authUser.id();
         log.info("create new menu item by user {}", userId);
-        checkNew(item);
-//        item.setActualDate(LocalDate.now());
-//        item.setRestaurant(restaurantRepository.getExisted(id));
-        MenuItem created = repository.save(item);
+        checkNew(itemTo);
+        MenuItem item = MenuItemUtil.createFromTo(itemTo, restaurantRepository.getExisted(itemTo.getRestaurantId()));
+        MenuItemTo created = MenuItemUtil.createTo(repository.save(item));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -51,13 +55,12 @@ public class AdminMenuItemController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody MenuItem item,
+    public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody MenuItemTo itemTo,
                        @PathVariable int id) {
         int userId = authUser.id();
         log.info("update menu item {} by user {}", id, userId);
-        assureIdConsistent(item, id);
-//        item.setActualDate(LocalDate.now());
-//        item.setRestaurant(restaurantRepository.getExisted(id));
+        assureIdConsistent(itemTo, id);
+        MenuItem item = MenuItemUtil.createFromTo(itemTo, restaurantRepository.getExisted(itemTo.getRestaurantId()));
         repository.save(item);
     }
 }

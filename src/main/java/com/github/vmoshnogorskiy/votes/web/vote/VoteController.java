@@ -68,8 +68,7 @@ public class VoteController {
         log.info("create new vote for user {}", authUser.id());
         ValidationUtil.checkNew(voteTo);
         validateAddConstraint(authUser.getUser());
-        Vote vote = new Vote();
-        VotesUtil.updateVote(vote, restaurantRepository.getExisted(voteTo.getRestaurantId()), authUser.getUser());
+        Vote vote = VotesUtil.create(restaurantRepository.getExisted(voteTo.getRestaurantId()), authUser.getUser());
 
         VoteTo created = VotesUtil.createTo(voteRepository.save(vote));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -86,7 +85,7 @@ public class VoteController {
         ValidationUtil.assureIdConsistent(voteTo, id);
         Vote vote = voteRepository.getExisted(id);
         validateUpdateConstraint(userId, id);
-        VotesUtil.updateVote(vote, restaurantRepository.getExisted(voteTo.getRestaurantId()), authUser.getUser());
+        VotesUtil.update(vote, restaurantRepository.getExisted(voteTo.getRestaurantId()), authUser.getUser());
         voteRepository.save(vote);
     }
 
