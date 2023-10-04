@@ -12,7 +12,7 @@ import com.github.vmoshnogorskiy.votes.to.VoteTo;
 import com.github.vmoshnogorskiy.votes.util.JsonUtil;
 import com.github.vmoshnogorskiy.votes.web.AbstractControllerTest;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static com.github.vmoshnogorskiy.votes.util.VotesUtil.createToOptional;
 import static com.github.vmoshnogorskiy.votes.web.vote.VoteController.REST_URL;
-import static com.github.vmoshnogorskiy.votes.web.vote.VoteController.setHourAfterNotChangeVote;
+import static com.github.vmoshnogorskiy.votes.web.vote.VoteController.setTimeAfterNotChangeVote;
 import static com.github.vmoshnogorskiy.votes.web.vote.VoteTestData.*;
 
 class VoteControllerTest extends AbstractControllerTest {
@@ -59,7 +59,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void delete() throws Exception {
-        setHourAfterNotChangeVote(LocalDateTime.now().getHour() + 1);
+        setTimeAfterNotChangeVote(LocalTime.now().getHour() + 1, 0);
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + VOTE1_ID))
                 .andExpect(status().isNoContent());
         assertFalse(voteRepository.get(UserTestData.USER_ID, VOTE1_ID).isPresent());
@@ -68,7 +68,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void deleteAfterNotChangeHour() throws Exception {
-        setHourAfterNotChangeVote(LocalDateTime.now().getHour() - 1);
+        setTimeAfterNotChangeVote(LocalTime.now().getHour() - 1, 0);
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + VOTE1_ID))
                 .andExpect(status().isConflict());
         assertTrue(voteRepository.get(UserTestData.USER_ID, VOTE1_ID).isPresent());
@@ -77,7 +77,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.GUEST_MAIL)
     void deleteOtherUser() throws Exception {
-        setHourAfterNotChangeVote(LocalDateTime.now().getHour() + 1);
+        setTimeAfterNotChangeVote(LocalTime.now().getHour() + 1, 0);
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + VOTE1_ID))
                 .andExpect(status().isConflict());
         assertTrue(voteRepository.get(UserTestData.USER_ID, VOTE1_ID).isPresent());
@@ -101,7 +101,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void update() throws Exception {
-        setHourAfterNotChangeVote(LocalDateTime.now().getHour() + 1);
+        setTimeAfterNotChangeVote(LocalTime.now().getHour() + 1, 0);
         VoteTo updated = getUpdatedVoteTo();
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + VOTE1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -113,7 +113,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void updateAfterNotChangeHour() throws Exception {
-        setHourAfterNotChangeVote(LocalDateTime.now().getHour() - 1);
+        setTimeAfterNotChangeVote(LocalTime.now().getHour() - 1, 0);
         VoteTo updated = getUpdatedVoteTo();
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + VOTE1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -124,7 +124,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void updateForOtherUser() throws Exception {
-        setHourAfterNotChangeVote(LocalDateTime.now().getHour() + 1);
+        setTimeAfterNotChangeVote(LocalTime.now().getHour() + 1, 0);
         VoteTo updated = getUpdatedVoteTo();
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + VOTE1_ID)
                 .contentType(MediaType.APPLICATION_JSON)

@@ -21,7 +21,7 @@ import com.github.vmoshnogorskiy.votes.to.VoteTo;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +33,7 @@ public class VoteController {
 
     static final String REST_URL = "/api/votes";
 
-    private static int hourAfterNotChangeVote = 11;
+    private static LocalTime timeAfterNotChangeVote = LocalTime.of(11, 00);
 
     private final VoteRepository voteRepository;
 
@@ -89,8 +89,8 @@ public class VoteController {
         voteRepository.save(vote);
     }
 
-    protected static void setHourAfterNotChangeVote(int hour) {
-        VoteController.hourAfterNotChangeVote = hour;
+    protected static void setTimeAfterNotChangeVote(int hour, int minute) {
+        VoteController.timeAfterNotChangeVote = LocalTime.of(hour, minute);
     }
 
     private void validateAddConstraint(User user) {
@@ -102,9 +102,8 @@ public class VoteController {
 
     private void validateUpdateConstraint(int userId, int id) {
         Vote vote = voteRepository.getExistedOrBelonged(userId, id);
-        int hour = LocalDateTime.now().getHour();
-        if (LocalDate.now().isAfter(vote.getActualDate()) || hour >= hourAfterNotChangeVote) {
-            throw new DataConflictException("the vote cannot be changed today after " + hourAfterNotChangeVote + ":00 am or later");
+        if (LocalDate.now().isAfter(vote.getActualDate()) || LocalTime.now().isAfter(timeAfterNotChangeVote)) {
+            throw new DataConflictException("the vote cannot be changed today after " + timeAfterNotChangeVote + ":00 am or later");
         }
     }
 }
