@@ -12,7 +12,7 @@ import static com.github.vmoshnogorskiy.votes.util.MenuItemUtil.createTo;
 
 public class MenuItemTestData {
 
-    public static final MatcherFactory.Matcher<MenuItem> MENU_ITEM_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(MenuItem.class, "actualDate", "restaurant");
+    public static final MatcherFactory.Matcher<MenuItem> MENU_ITEM_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(MenuItem.class, "restaurant.menu", "restaurant.votes");
 
     public static final MatcherFactory.Matcher<MenuItemTo> MENU_ITEM_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(MenuItemTo.class);
 

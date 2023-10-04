@@ -37,17 +37,17 @@ class VoteControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(votes));
+                .andExpect(VOTE_TO_MATCHER.contentJson(voteTos));
     }
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + VOTE1_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + (VOTE1_ID + 1)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(vote1));
+                .andExpect(VOTE_TO_MATCHER.contentJson(voteTo));
     }
 
     @Test

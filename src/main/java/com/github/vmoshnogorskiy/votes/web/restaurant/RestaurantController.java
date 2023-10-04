@@ -32,8 +32,8 @@ public class RestaurantController {
 
     @GetMapping
     @Cacheable(cacheManager = "allRestaurantsCacheManager", cacheNames = "all_restaurants")
-    public List<Restaurant> getAll(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("getAll restaurants for user {}", authUser.id());
+    public List<Restaurant> getAll() {
+        log.info("getAll restaurants");
         return restaurantRepository.findAll();
     }
 
