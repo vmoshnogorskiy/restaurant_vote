@@ -6,6 +6,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.github.vmoshnogorskiy.votes.model.Restaurant;
 import com.github.vmoshnogorskiy.votes.repository.RestaurantRepository;
@@ -45,6 +46,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/with-count-votes")
+    @Transactional(readOnly = true)
     public List<RestaurantTo> getWithCountVotes(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get restaurants with countVotes for user {}", authUser.id());
         List<Restaurant> restaurants = restaurantRepository.findAll();

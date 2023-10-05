@@ -4,12 +4,12 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-@Component
+@Configuration
 public class CacheManagerConfig {
 
     @Bean("restaurantCacheManager")

@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class MenuItemController {
     private final MenuItemRepository repository;
 
     @GetMapping
+    @Transactional(readOnly = true)
     public List<MenuItemTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAll menu items by user {}", authUser.id());
         List<MenuItem> items = repository.findAll();
@@ -37,12 +39,14 @@ public class MenuItemController {
     }
 
     @GetMapping("/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<MenuItemTo> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("get menu item {} for user {}", id, authUser.id());
         return ResponseEntity.of(MenuItemUtil.createToOptional(repository.getExisted(id)));
     }
 
     @GetMapping("/filter")
+    @Transactional(readOnly = true)
     public List<MenuItemTo> getBetween(@RequestParam @Nullable LocalDate startDate, @RequestParam @Nullable LocalDate endDate) {
         List<MenuItem> items = repository.getBetween(startDate, endDate);
         return items.stream()

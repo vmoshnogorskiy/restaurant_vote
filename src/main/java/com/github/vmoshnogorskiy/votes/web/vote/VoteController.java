@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.vmoshnogorskiy.votes.to.VoteTo;
@@ -33,13 +34,14 @@ public class VoteController {
 
     static final String REST_URL = "/api/votes";
 
-    private static LocalTime timeAfterNotChangeVote = LocalTime.of(11, 00);
+    private static LocalTime timeAfterNotChangeVote = LocalTime.of(18, 0);
 
     private final VoteRepository voteRepository;
 
     private final RestaurantRepository restaurantRepository;
 
     @GetMapping
+    @Transactional(readOnly = true)
     public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAll votes for user {}", authUser.id());
         List<Vote> votes = voteRepository.getAll(authUser.id());
@@ -49,6 +51,7 @@ public class VoteController {
     }
 
     @GetMapping("/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<VoteTo> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("get vote {} for user {}", id, authUser.id());
         return ResponseEntity.of(VotesUtil.createToOptional(voteRepository.getExisted(id)));
@@ -56,14 +59,17 @@ public class VoteController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
     public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         int userId = authUser.id();
         log.info("delete vote {} for user {}", id, userId);
-        validateUpdateConstraint(userId, id);
+        Vote vote = voteRepository.getExistedOrBelonged(userId, id);
+        validateUpdateConstraint(vote);
         voteRepository.delete(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ResponseEntity<VoteTo> add(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo) {
         log.info("create new vote for user {}", authUser.id());
         ValidationUtil.checkNew(voteTo);
@@ -79,12 +85,13 @@ public class VoteController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
     public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo, @PathVariable int id) {
         int userId = authUser.id();
         log.info("update vote {} for user {}", id, userId);
         ValidationUtil.assureIdConsistent(voteTo, id);
-        Vote vote = voteRepository.getExisted(id);
-        validateUpdateConstraint(userId, id);
+        Vote vote = voteRepository.getExistedOrBelonged(userId, id);
+        validateUpdateConstraint(vote);
         VotesUtil.update(vote, restaurantRepository.getExisted(voteTo.getRestaurantId()), authUser.getUser());
         voteRepository.save(vote);
     }
@@ -100,10 +107,9 @@ public class VoteController {
         }
     }
 
-    private void validateUpdateConstraint(int userId, int id) {
-        Vote vote = voteRepository.getExistedOrBelonged(userId, id);
+    private void validateUpdateConstraint(Vote vote) {
         if (LocalDate.now().isAfter(vote.getActualDate()) || LocalTime.now().isAfter(timeAfterNotChangeVote)) {
-            throw new DataConflictException("the vote cannot be changed today after " + timeAfterNotChangeVote + ":00 am or later");
+            throw new DataConflictException("the vote cannot be changed today after " + timeAfterNotChangeVote + " or later");
         }
     }
 }

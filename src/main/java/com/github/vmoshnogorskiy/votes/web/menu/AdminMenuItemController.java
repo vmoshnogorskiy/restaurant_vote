@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -41,6 +42,7 @@ public class AdminMenuItemController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ResponseEntity<MenuItemTo> add(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody MenuItemTo itemTo) {
         int userId = authUser.id();
         log.info("create new menu item by user {}", userId);
@@ -55,6 +57,7 @@ public class AdminMenuItemController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
     public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody MenuItemTo itemTo,
                        @PathVariable int id) {
         int userId = authUser.id();
